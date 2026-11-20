@@ -1,0 +1,292 @@
+---
+import { projects } from '../inhalt';
+
+const serializedProjects = JSON.stringify(projects);
+---
+
+<div
+  id="project-modal"
+  class="modal-backdrop"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+  <div id="modal-dialog" class="modal-dialog" role="document">
+    <div class="modal-header">
+      <span id="modal-category" class="modal-cat-tag"></span>
+      <div class="modal-controls">
+        <button type="button" id="modal-prev" class="modal-text-btn">← Zurück</button>
+        <button type="button" id="modal-next" class="modal-text-btn">Weiter →</button>
+        <button type="button" id="modal-close" class="modal-text-btn modal-close">Schließen ×</button>
+      </div>
+    </div>
+
+    <div class="modal-content-wrap">
+      <div class="modal-video" id="modal-video-container"></div>
+
+      <div class="modal-body modal-body-split">
+        <div class="modal-main-col">
+          <div class="modal-meta-line">
+            <span id="modal-client"></span>
+            <span>·</span>
+            <span id="modal-product"></span>
+            <span>·</span>
+            <span id="modal-year"></span>
+          </div>
+          <h2 id="modal-title" class="modal-title"></h2>
+          <div id="modal-awards-wrap" class="modal-awards-wrap" hidden></div>
+          <p id="modal-description" class="modal-description"></p>
+          <a id="modal-youtube-link" href="#" target="_blank" rel="noopener noreferrer" class="modal-yt-link">
+            Auf YouTube öffnen
+          </a>
+        </div>
+
+        <aside class="modal-skills-box">
+          <span id="modal-skills-heading" class="modal-skills-heading">Aufgabenbereich</span>
+          <div id="modal-skills-list" class="skills-bubbles-wrap"></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ serializedProjects }}>
+  const allProjects = JSON.parse(serializedProjects);
+  let currentIndex = -1;
+
+  const modal = document.getElementById('project-modal');
+  const dialog = document.getElementById('modal-dialog');
+  const videoContainer = document.getElementById('modal-video-container');
+  const categoryEl = document.getElementById('modal-category');
+  const clientEl = document.getElementById('modal-client');
+  const productEl = document.getElementById('modal-product');
+  const yearEl = document.getElementById('modal-year');
+  const titleEl = document.getElementById('modal-title');
+  const descEl = document.getElementById('modal-description');
+  const awardsWrapEl = document.getElementById('modal-awards-wrap');
+  const youtubeLink = document.getElementById('modal-youtube-link');
+  const skillsHeadingEl = document.getElementById('modal-skills-heading');
+  const skillsListEl = document.getElementById('modal-skills-list');
+
+  const btnClose = document.getElementById('modal-close');
+  const btnPrev = document.getElementById('modal-prev');
+  const btnNext = document.getElementById('modal-next');
+
+  function toSkillSlug(skill) {
+    return String(skill)
+      .toLowerCase()
+      .replace(/ä/g, 'ae')
+      .replace(/ö/g, 'oe')
+      .replace(/ü/g, 'ue')
+      .replace(/\s+/g, '-');
+  }
+
+  function renderProjectModal(index) {
+    if (index < 0 || index >= allProjects.length) return;
+    currentIndex = index;
+    const p = allProjects[index];
+
+    const ratio = p.aspectRatio || '16:9';
+    dialog.classList.remove('is-ratio-16-9', 'is-ratio-9-16', 'is-ratio-4-3');
+    if (ratio === '9:16') {
+      dialog.classList.add('is-ratio-9-16');
+    } else if (ratio === '4:3') {
+      dialog.classList.add('is-ratio-4-3');
+    } else {
+      dialog.classList.add('is-ratio-16-9');
+    }
+
+    categoryEl.textContent = p.category;
+    categoryEl.className = `modal-cat-tag cat-${p.category}`;
+    clientEl.textContent = p.client || '';
+    productEl.textContent = p.product || p.subtitle || '';
+    yearEl.textContent = p.year;
+    titleEl.textContent = p.title;
+    descEl.textContent = p.description;
+    if (awardsWrapEl) {
+      awardsWrapEl.innerHTML = '';
+      if (p.awards && p.awards.length > 0) {
+        const laurelSvg = `<svg class="modal-award-laurel" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /></svg>`;
+        p.awards.forEach((award) => {
+          const item = document.createElement('div');
+          item.className = 'modal-award-item';
+          item.innerHTML = `${laurelSvg}<span>${award}</span>`;
+          awardsWrapEl.appendChild(item);
+        });
+        awardsWrapEl.hidden = false;
+      } else {
+        awardsWrapEl.hidden = true;
+      }
+    }
+    const urlStr = String(p.youtubeUrl || '');
+    youtubeLink.href = urlStr;
+    const isInstagram = Boolean(p.instagramCode) || urlStr.includes('instagram.com');
+    const isPlaylist = urlStr.includes('youtube.com/playlist?list=');
+    const isChannel = urlStr.includes('youtube.com/@');
+    if (isInstagram) {
+      youtubeLink.textContent = 'Auf Instagram öffnen';
+    } else if (isPlaylist) {
+      youtubeLink.textContent = 'Playlist auf YouTube öffnen';
+    } else if (isChannel) {
+      youtubeLink.textContent = 'YouTube-Kanal öffnen';
+    } else {
+      youtubeLink.textContent = 'Auf YouTube öffnen';
+    }
+
+    if (skillsHeadingEl) {
+      const skillCount = (p.skills || []).length;
+      skillsHeadingEl.textContent = skillCount === 1 ? 'Aufgabenbereich' : 'Aufgabenbereiche';
+    }
+
+    if (skillsListEl) {
+      skillsListEl.innerHTML = '';
+      (p.skills || []).forEach((skill) => {
+        const a = document.createElement('a');
+        a.href = `/faehigkeiten/${toSkillSlug(skill)}/`;
+        a.className = 'chrome-pill skill-bubble';
+        a.textContent = skill;
+        skillsListEl.appendChild(a);
+      });
+    }
+
+    function mountVideoEmbed(project) {
+      videoContainer.classList.toggle('is-instagram-embed', Boolean(project.instagramCode && !project.videoFile));
+
+      if (project.videoFile) {
+        videoContainer.innerHTML = `
+          <video
+            src="${project.videoFile}"
+            poster="${project.thumbnail}"
+            controls
+            autoplay
+            playsinline
+            style="width:100%;height:100%;object-fit:cover;background:#000;"
+          ></video>
+        `;
+      } else if (project.instagramCode) {
+        videoContainer.innerHTML = `
+          <iframe
+            class="ig-reel-iframe"
+            src="https://www.instagram.com/reel/${project.instagramCode}/embed/"
+            title="${project.title.replace(/"/g, '&quot;')}"
+            frameborder="0"
+            scrolling="no"
+            allowtransparency="true"
+            allow="encrypted-media; autoplay; fullscreen"
+          ></iframe>
+        `;
+      } else {
+        videoContainer.innerHTML = `
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/${project.youtubeId}?autoplay=1&rel=0"
+            title="${project.title.replace(/"/g, '&quot;')}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        `;
+      }
+    }
+
+    const canLoadExternal = Boolean(p.videoFile) || Boolean(window.danioConsent?.hasVideoConsent?.());
+
+    if (canLoadExternal) {
+      mountVideoEmbed(p);
+    } else {
+      const providerName = p.instagramCode ? 'Instagram (Meta)' : 'YouTube (Google)';
+      videoContainer.classList.remove('is-instagram-embed');
+      videoContainer.innerHTML = `
+        <div class="video-consent-gate">
+          <img src="${p.thumbnail}" alt="${p.title.replace(/"/g, '&quot;')}" class="video-consent-bg" />
+          <div class="video-consent-card">
+            <span class="video-consent-kicker">Externes Video · ${providerName}</span>
+            <p class="video-consent-text">
+              Zum Abspielen wird eine Verbindung zu <strong>${providerName}</strong> hergestellt. Dabei können Daten an den Anbieter übertragen werden.
+            </p>
+            <div class="video-consent-actions">
+              <button type="button" class="chrome-pill video-consent-btn" data-load-once>
+                Dieses Video laden
+              </button>
+              <button type="button" class="chrome-pill video-consent-btn video-consent-primary" data-load-always>
+                Immer erlauben
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      videoContainer.querySelector('[data-load-once]')?.addEventListener('click', () => {
+        mountVideoEmbed(p);
+      });
+      videoContainer.querySelector('[data-load-always]')?.addEventListener('click', () => {
+        window.danioConsent?.accept?.();
+        mountVideoEmbed(p);
+      });
+    }
+
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProjectModal() {
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    modal.classList.remove('is-open');
+    videoContainer.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  function openBySlug(slug) {
+    const idx = allProjects.findIndex((item) => item.slug === slug);
+    if (idx !== -1) {
+      renderProjectModal(idx);
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-project-card]');
+    if (trigger) {
+      e.preventDefault();
+      const slug = trigger.getAttribute('data-project-slug');
+      if (slug) openBySlug(slug);
+      return;
+    }
+
+    if (e.target === modal) {
+      closeProjectModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const trigger = document.activeElement?.closest?.('[data-project-card]');
+    if (trigger && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      const slug = trigger.getAttribute('data-project-slug');
+      if (slug) openBySlug(slug);
+      return;
+    }
+
+    if (!modal || !modal.classList.contains('is-open')) return;
+    if (e.key === 'Escape') {
+      closeProjectModal();
+    } else if (e.key === 'ArrowLeft') {
+      const prevIdx = (currentIndex - 1 + allProjects.length) % allProjects.length;
+      renderProjectModal(prevIdx);
+    } else if (e.key === 'ArrowRight') {
+      const nextIdx = (currentIndex + 1) % allProjects.length;
+      renderProjectModal(nextIdx);
+    }
+  });
+
+  btnClose?.addEventListener('click', closeProjectModal);
+  btnPrev?.addEventListener('click', () => {
+    const prevIdx = (currentIndex - 1 + allProjects.length) % allProjects.length;
+    renderProjectModal(prevIdx);
+  });
+  btnNext?.addEventListener('click', () => {
+    const nextIdx = (currentIndex + 1) % allProjects.length;
+    renderProjectModal(nextIdx);
+  });
+</script>

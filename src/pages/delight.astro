@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { delightProjects } from '../inhalt';
+---
+
+<BaseLayout title="delight | Danio Schneider" activeNav="delight">
+  <section class="category-page">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="title-highlight">delight</h1>
+        <p class="subtitle">jemanden erfreuen, begeistern oder unterhalten.</p>
+      </div>
+
+      <div class="projects-grid">
+        {delightProjects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .category-page {
+    padding: 3.5rem 0 2rem;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .title-highlight {
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(3.2rem, 6vw, 4.8rem);
+    line-height: 1;
+    color: var(--black);
+    padding: 0.08em 0.48em 0.14em;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    transition: all 0.5s var(--ease-fluid);
+  }
+
+  .title-highlight:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 12px 32px var(--pink-glow);
+    transform: translateY(-2px);
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+</style>

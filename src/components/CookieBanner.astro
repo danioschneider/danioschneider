@@ -1,0 +1,86 @@
+<aside
+  id="cookie-banner"
+  class="cookie-banner"
+  role="dialog"
+  aria-live="polite"
+  aria-label="Cookie- und Datenschutzeinstellungen"
+  hidden
+>
+  <div class="cookie-banner-inner">
+    <div class="cookie-copy">
+      <strong class="cookie-title">Datenschutz &amp; externe Videos</strong>
+      <p class="cookie-text">
+        Diese Website nutzt keine Tracking-Cookies und lädt Schriftarten lokal. Lediglich zum Abspielen eingebetteter Videos von YouTube und Instagram werden externe Inhalte geladen.
+        <a href="/datenschutz/" class="cookie-policy-link">Mehr erfahren</a>
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <button type="button" id="cookie-reject" class="chrome-pill cookie-btn">
+        Nur notwendige
+      </button>
+      <button type="button" id="cookie-accept" class="chrome-pill cookie-btn cookie-btn-primary">
+        Videos erlauben
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script is:inline>
+  (function () {
+    const STORAGE_KEY = 'danio_media_consent';
+    const banner = document.getElementById('cookie-banner');
+    const btnReject = document.getElementById('cookie-reject');
+    const btnAccept = document.getElementById('cookie-accept');
+
+    function getConsent() {
+      try {
+        return localStorage.getItem(STORAGE_KEY);
+      } catch {
+        return null;
+      }
+    }
+
+    function setConsent(value) {
+      try {
+        localStorage.setItem(STORAGE_KEY, value);
+      } catch {
+        // ignore storage errors
+      }
+      if (banner) {
+        banner.hidden = true;
+        banner.classList.remove('is-visible');
+      }
+      window.dispatchEvent(new CustomEvent('danio-consent-change', { detail: value }));
+    }
+
+    function openBanner() {
+      if (!banner) return;
+      banner.hidden = false;
+      requestAnimationFrame(() => banner.classList.add('is-visible'));
+    }
+
+    window.danioConsent = {
+      get: getConsent,
+      hasVideoConsent: () => getConsent() === 'accepted',
+      accept: () => setConsent('accepted'),
+      reject: () => setConsent('essential'),
+      openSettings: openBanner,
+    };
+
+    if (!getConsent()) {
+      openBanner();
+    }
+
+    btnReject?.addEventListener('click', () => setConsent('essential'));
+    btnAccept?.addEventListener('click', () => setConsent('accepted'));
+
+    document.addEventListener('click', (e) => {
+      const opener = e.target.closest('[data-open-cookie-settings]');
+      if (opener) {
+        e.preventDefault();
+        openBanner();
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../inhalt';
+---
+
+<BaseLayout title="Impressum | Danio Schneider" activeNav="legal">
+  <section class="legal-section">
+    <div class="container">
+      <div class="legal-header">
+        <a href="/" class="chrome-pill back-pill">← Zurück zur Startseite</a>
+        <h1 class="title-highlight">Impressum</h1>
+      </div>
+
+      <div class="legal-content">
+        <h2>Angaben gemäß § 5 DDG</h2>
+        <p>
+          <strong>{siteConfig.name}</strong><br />
+          {siteConfig.street}<br />
+          {siteConfig.city}
+        </p>
+
+        <h2>Kontakt</h2>
+        <p>
+          Telefon: <a href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}>{siteConfig.phone}</a><br />
+          E-Mail: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+        </p>
+
+        <h2>Redaktionell verantwortlich gemäß § 18 Abs. 2 MStV</h2>
+        <p>
+          {siteConfig.name}<br />
+          {siteConfig.street}<br />
+          {siteConfig.city}
+        </p>
+
+        <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
+        <p>
+          Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+        </p>
+
+        <h2>Haftung für Inhalte & externe Links</h2>
+        <p>
+          Als Diensteanbieter sind wir gemäß den allgemeinen Gesetzen für eigene Inhalte auf diesen Seiten verantwortlich. Unser Angebot enthält Links zu externen Websites Dritter (u. a. YouTube, Instagram, LinkedIn), auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+        </p>
+
+        <h2>Urheberrecht</h2>
+        <p>
+          Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden (z. B. Porträtfotografie © Tinett Kähler oder Auftragsproduktionen für Sender und Institutionen), werden die Urheberrechte Dritter beachtet.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding: 3.5rem 0 2rem;
+  }
+
+  .legal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .back-pill {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .title-highlight {
+    display: inline-block;
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 1;
+    padding: 0.08em 0.45em 0.14em;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    transition: all 0.45s var(--ease-fluid);
+  }
+
+  .title-highlight:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 10px 28px var(--pink-glow);
+  }
+
+  .legal-content {
+    max-width: 740px;
+  }
+
+  .legal-content h2 {
+    margin: 2rem 0 0.5rem;
+    font-size: 1.12rem;
+  }
+
+  .legal-content p {
+    margin: 0 0 1rem;
+    line-height: 1.75;
+  }
+
+  .legal-content a {
+    text-decoration: underline;
+    padding: 0.1rem 0.35rem;
+    border-radius: var(--radius-pill);
+    transition: all 0.3s var(--ease-fluid);
+  }
+  .legal-content a:hover {
+    background: var(--chrome-pink);
+    text-decoration: none;
+  }
+</style>

@@ -1,0 +1,629 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { siteConfig, delightProjects, enlightProjects, skillToSlug, formatBrandWords } from '../inhalt';
+---
+
+<BaseLayout title="Danio Schneider" activeNav="home">
+  <!-- ==========================================
+       VOLLBILD-HERO: ERST NUR DER SPRUCH ZENTRAL
+  =========================================== -->
+  <section class="quote-fullscreen chrome-surface">
+    <div class="container quote-center-wrap">
+      <div class="quote-prefix">{siteConfig.quote.prefix}</div>
+
+      <blockquote class="central-quote">
+        “any activity designed to{' '}
+        <a href="#delight" class="quote-link-underlined">
+          {siteConfig.quote.wordDelight}
+        </a>{' '}
+        and, to a smaller degree,{' '}
+        <a href="#enlight" class="quote-link-underlined">
+          {siteConfig.quote.wordEnlight}
+        </a>”
+      </blockquote>
+
+      <cite class="quote-cite">{siteConfig.quote.author}</cite>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PROJEKTE 01: DELIGHT (Top 3 komplett + Reihe 2 sanft ausgefadet + Button darunter)
+  =========================================== -->
+  <section class="projects-section" id="delight">
+    <div class="container">
+      <div class="category-heading">
+        <div class="category-title-group">
+          <h2>
+            <span class="heading-fluid-pill">delight</span>
+          </h2>
+          <p class="category-definition">jemanden erfreuen, begeistern oder unterhalten.</p>
+        </div>
+      </div>
+
+      <div class="projects-expandable" data-expand-section="delight">
+        <div class="projects-grid">
+          {delightProjects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+
+        <div class="expand-action-row">
+          <button
+            type="button"
+            class="chrome-pill expand-btn"
+            data-expand-btn
+            data-brand-word="delight"
+            aria-expanded="false"
+          >
+            Alle <span class="brand-word">delight</span>-Projekte
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PROJEKTE 02: ENLIGHT (Top 3 komplett + Reihe 2 sanft ausgefadet + Button darunter)
+  =========================================== -->
+  <section class="projects-section" id="enlight">
+    <div class="container">
+      <div class="category-heading">
+        <div class="category-title-group">
+          <h2>
+            <span class="heading-fluid-pill">enlight</span>
+          </h2>
+          <p class="category-definition">jemanden aufklären, erleuchten oder informieren.</p>
+        </div>
+      </div>
+
+      <div class="projects-expandable" data-expand-section="enlight">
+        <div class="projects-grid">
+          {enlightProjects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+
+        <div class="expand-action-row">
+          <button
+            type="button"
+            class="chrome-pill expand-btn"
+            data-expand-btn
+            data-brand-word="enlight"
+            aria-expanded="false"
+          >
+            Alle <span class="brand-word">enlight</span>-Projekte
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SEKTION 03 AM ENDE DER STARTSEITE: GUTE UNTERHALTUNG KANN BEIDES.
+  =========================================== -->
+  <section class="about-home-section" id="ueber-mich">
+    <div class="container">
+      <div class="category-heading">
+        <h2>
+          <span class="heading-fluid-pill">{siteConfig.about.headline}</span>
+        </h2>
+      </div>
+
+      <div class="about-layout">
+        {siteConfig.about.photo && (
+          <figure class="about-photo-figure">
+            <div class="about-photo-box">
+              <img src={siteConfig.about.photo} alt={siteConfig.name} loading="lazy" />
+            </div>
+            {siteConfig.about.photoCredit && (
+              <figcaption class="about-photo-credit">{siteConfig.about.photoCredit}</figcaption>
+            )}
+          </figure>
+        )}
+
+        <div class="about-text">
+          {siteConfig.about.paragraphs.map((paragraph) => (
+            <p set:html={formatBrandWords(paragraph)} />
+          ))}
+
+          <div class="about-education">
+            <p class="contact-label">Ausbildung</p>
+            <ul class="education-list">
+              {siteConfig.about.education.map((item) => (
+                <li class="education-item">
+                  <span class="education-period">{item.period}</span>
+                  <div class="education-info">
+                    <strong class="education-institution">{item.institution}</strong>
+                    <span class="education-detail">{item.detail}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <aside class="about-skills-col">
+          <div class="about-skills-card">
+            <p class="contact-label">Fähigkeiten</p>
+            <div class="skills-bubbles-wrap">
+              {siteConfig.about.skills.map((skill) => (
+                <a href={`/faehigkeiten/${skillToSlug(skill)}/`} class="chrome-pill skill-bubble">
+                  {skill}
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  // Sanftes Nachleuchten beim Rüberwischen NUR für delight und enlighten
+  document.querySelectorAll('.quote-link-underlined').forEach((el) => {
+    el.addEventListener('pointerenter', () => {
+      el.classList.add('is-lit');
+      clearTimeout(el._litTimer);
+      el._litTimer = setTimeout(() => {
+        el.classList.remove('is-lit');
+      }, 950);
+    });
+  });
+
+  // Sauberes Auf- & Zuklappen per CSS-Klasse (ohne Überlappung)
+  document.querySelectorAll('[data-expand-section]').forEach((section) => {
+    const btn = section.querySelector('[data-expand-btn]');
+    if (!btn) return;
+    const brandWord = btn.getAttribute('data-brand-word') || 'delight';
+
+    btn.addEventListener('click', () => {
+      const shouldOpen = !section.classList.contains('is-expanded');
+      section.classList.toggle('is-expanded', shouldOpen);
+      btn.setAttribute('aria-expanded', String(shouldOpen));
+      btn.innerHTML = shouldOpen
+        ? 'Weniger anzeigen'
+        : `Alle <span class="brand-word">${brandWord}</span>-Projekte`;
+    });
+  });
+</script>
+
+<style>
+  .quote-fullscreen {
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    min-height: calc(100vh - 81px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3.5rem 0;
+    border-bottom: 1.5px solid var(--black);
+    overflow: hidden;
+  }
+
+  /* Großer Fluid-Chrome-Hintergrundschein beim Rüberwischen */
+  .quote-fullscreen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      650px circle at var(--mx) var(--my),
+      rgba(235, 158, 255, 0.36) 0%,
+      rgba(247, 202, 255, 0.15) 40%,
+      rgba(255, 255, 255, 0) 72%
+    );
+    opacity: 0;
+    transition: opacity 0.55s var(--ease-fluid);
+    pointer-events: none;
+  }
+
+  .quote-fullscreen:hover::before {
+    opacity: 1;
+  }
+
+  .quote-center-wrap {
+    text-align: center;
+    max-width: 1080px;
+  }
+
+  /* Drumherum ("entertainment:") in Montserrat */
+  .quote-prefix {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Das gesamte Zitat im Stil von Lexicon */
+  .central-quote {
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 5.8vw, 4.85rem);
+    line-height: 1.18;
+    color: var(--black);
+  }
+
+  /* delight & enlighten: Unterstrichen, ohne Umrandung, leuchten beim Rüberwischen in Pink-Chrome */
+  .quote-link-underlined {
+    display: inline-block;
+    padding: 0.02em 0.26em 0.08em;
+    margin: 0 -0.06em;
+    border-radius: var(--radius-pill);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+    color: var(--black);
+    transition:
+      background 0.45s var(--ease-fluid),
+      box-shadow 0.45s var(--ease-fluid),
+      transform 0.45s var(--ease-fluid);
+  }
+
+  .quote-link-underlined:hover,
+  .quote-link-underlined:focus-visible,
+  .quote-link-underlined.is-lit {
+    background: var(--chrome-pink);
+    box-shadow: 0 10px 30px var(--pink-glow);
+    transform: translateY(-3px);
+  }
+
+  /* Drumherum ("Zillmann and Bryant, 1994") in Montserrat */
+  .quote-cite {
+    display: block;
+    margin-top: 2.25rem;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  /* ==========================================
+     PROJEKT-SEKTIONEN:
+     - Top 3 (Karten 1–3): 100% vollständig sichtbar
+     - Karten 4–6 (Reihe 2 darunter): Gleicher Abstand, oben 115px angedeutet & sanft ausgefadet
+     - Karten 7+: Im eingeklappten Zustand ausgeblendet
+     - Keinerlei Überlappung!
+  =========================================== */
+  .projects-section {
+    padding: 5.5rem 0 1.5rem;
+    scroll-margin-top: 85px;
+  }
+
+  .category-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .category-title-group {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.75rem;
+  }
+
+  /* Gleicher Look wie "Zillmann and Bryant, 1994" oben */
+  .category-definition {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  .category-heading h2 {
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(3rem, 5.2vw, 4.4rem);
+    line-height: 1;
+  }
+
+  .heading-fluid-pill {
+    display: inline-block;
+    padding: 0.08em 0.5em 0.14em;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    transition: all 0.5s var(--ease-fluid);
+  }
+
+  .heading-fluid-pill:hover {
+    background: var(--chrome-pink);
+    box-shadow:
+      0 12px 32px var(--pink-glow),
+      inset 0 2px 4px rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  /* Im eingeklappten Zustand: Reihe 2 (Karten 4, 5, 6) zeigt nur die oberen 135px des Vorschaubildes, sanft ausgefadet – Text ausgeblendet, damit nichts überlappt! */
+  .projects-expandable:not(.is-expanded) :global(.project-card:nth-child(n + 4):nth-child(-n + 6)) {
+    max-height: 135px;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.65) 0%,
+      rgba(0, 0, 0, 0.18) 58%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.65) 0%,
+      rgba(0, 0, 0, 0.18) 58%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .projects-expandable:not(.is-expanded) :global(.project-card:nth-child(n + 4):nth-child(-n + 6) .card-text) {
+    display: none;
+  }
+
+  .projects-expandable:not(.is-expanded) :global(.project-card:nth-child(n + 4):nth-child(-n + 6) .card-image) {
+    border-bottom: none;
+  }
+
+  /* Im eingeklappten Zustand: Karten ab Nr. 7 komplett ausblenden */
+  .projects-expandable:not(.is-expanded) :global(.project-card:nth-child(n + 7)) {
+    display: none;
+  }
+
+  /* Auf einspaltigen Screens (<820px) im eingeklappten Zustand nach den Top 3 nur Karte 4 andeuten */
+  @media (max-width: 820px) {
+    .projects-expandable:not(.is-expanded) :global(.project-card:nth-child(n + 5)) {
+      display: none;
+    }
+  }
+
+  /* Button mittig direkt unter der angedeuteten Reihe (ohne Überlappung!) */
+  .expand-action-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+
+  .projects-expandable.is-expanded .expand-action-row {
+    margin-top: 2.5rem;
+  }
+
+  .expand-btn {
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.72rem 1.85rem;
+    align-items: baseline;
+  }
+
+  .expand-btn :global(.brand-word) {
+    margin-left: 0.32em;
+    margin-right: 0.06em;
+  }
+
+  /* ==========================================
+     ÜBER MICH SEKTION AM ENDE DER STARTSEITE
+     (Porträtfoto: Schwarz-Weiß im Ruhezustand, farbig beim Hovern!)
+  =========================================== */
+  .about-home-section {
+    padding: 5.5rem 0 3rem;
+    scroll-margin-top: 85px;
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(300px, 385px) minmax(0, 1.3fr) minmax(215px, 260px);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 1020px) {
+    .about-layout {
+      grid-template-columns: minmax(280px, 360px) 1fr;
+    }
+    .about-skills-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about-skills-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .about-skills-card {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    padding: 1.35rem 1.4rem;
+    background: var(--white);
+  }
+
+  .about-photo-figure {
+    margin: 0;
+  }
+
+  .about-photo-box {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    overflow: hidden;
+    background: var(--black);
+    transition: all 0.55s var(--ease-fluid);
+  }
+
+  /* Porträt im Ruhezustand farbig – beim Rüberfahren Schwarz-Weiß! */
+  .about-photo-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(0%) contrast(1);
+    transition: filter 0.6s var(--ease-fluid), transform 0.6s var(--ease-fluid);
+  }
+
+  .about-photo-box:hover {
+    box-shadow:
+      0 24px 54px -10px var(--pink-glow),
+      0 0 0 2px var(--black);
+    transform: translateY(-5px) scale(1.01);
+  }
+
+  .about-photo-box:hover img {
+    filter: grayscale(100%) contrast(1.06);
+    transform: scale(1.03);
+  }
+
+  .about-photo-credit {
+    margin-top: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-align: left;
+  }
+
+  .about-text p {
+    margin: 0 0 1.4rem;
+    font-size: 1.08rem;
+    line-height: 1.8;
+    max-width: 60ch;
+  }
+
+  .about-skills,
+  .about-education {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1.5px solid var(--black);
+  }
+
+  .education-list {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .education-item {
+    display: grid;
+    grid-template-columns: 122px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.65rem 1rem;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    transition: all 0.4s var(--ease-fluid);
+  }
+
+  .education-item:hover {
+    background: var(--chrome-pink);
+    border-color: var(--black);
+    box-shadow: 0 8px 22px var(--pink-glow);
+  }
+
+  .education-period {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .education-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+  }
+
+  .education-institution {
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-size: 1.38rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .education-detail {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.94rem;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 560px) {
+    .education-item {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+
+  .about-contact {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    padding: 1.35rem 1.4rem;
+    background: var(--white);
+  }
+
+  .contact-label {
+    margin: 0 0 0.75rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .contact-mail {
+    display: inline-block;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.28rem;
+    color: var(--black);
+    padding: 0.28rem 1rem 0.35rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    word-break: break-all;
+    transition: all 0.45s var(--ease-fluid);
+  }
+
+  .contact-mail:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 10px 28px var(--pink-glow);
+    transform: translateY(-2px);
+  }
+</style>

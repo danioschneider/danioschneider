@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../inhalt';
+---
+
+<BaseLayout title="Datenschutzerklärung | Danio Schneider" activeNav="legal">
+  <section class="legal-section">
+    <div class="container">
+      <div class="legal-header">
+        <a href="/" class="chrome-pill back-pill">← Zurück zur Startseite</a>
+        <h1 class="title-highlight">Datenschutzerklärung</h1>
+      </div>
+
+      <div class="legal-prose">
+        <h2>1. Datenschutz auf einen Blick</h2>
+        <h3>Allgemeine Hinweise</h3>
+        <p>
+          Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Diese Website verzichtet vollständig auf Tracking-, Werbe- oder Analyse-Tools und lädt alle verwendeten Schriftarten lokal vom eigenen Server.
+        </p>
+
+        <h3>Verantwortliche Stelle</h3>
+        <p>
+          Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
+          <strong>{siteConfig.name}</strong><br />
+          {siteConfig.street}<br />
+          {siteConfig.city}<br />
+          Telefon: <a href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}>{siteConfig.phone}</a><br />
+          E-Mail: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+        </p>
+
+        <h2>2. Hosting & Bereitstellung der Website</h2>
+        <p>
+          Diese Website wird als statische Website über ein modernes Content-Delivery-Network (Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, USA / Bereitstellung aus GitHub-Repository) gehostet. Beim Aufruf der Seiten werden durch den Hosting-Anbieter aus technischen Gründen kurzzeitig Server-Logfiles (z. B. IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Datei, Browsertyp) verarbeitet, um die Auslieferung und Sicherheit der Website zu gewährleisten.
+        </p>
+        <p>
+          Die Verarbeitung erfolgt auf Grundlage unseres berechtigten Interesses an einer sicheren und zuverlässigen Bereitstellung dieser Website (Art. 6 Abs. 1 lit. f DSGVO). Eine Datenübermittlung in die USA erfolgt auf Grundlage des EU-US Data Privacy Frameworks (DPF) sowie von EU-Standardvertragsklauseln. Weitere Informationen finden Sie in der Datenschutzerklärung von Netlify unter <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">https://www.netlify.com/privacy/</a>.
+        </p>
+        <p>
+          <strong>SSL- bzw. TLS-Verschlüsselung:</strong> Diese Website nutzt aus Sicherheitsgründen eine verschlüsselte HTTPS-Verbindung (SSL/TLS).
+        </p>
+
+        <h2>3. Lokale Schriftarten (keine externen Font-Server)</h2>
+        <p>
+          Alle auf dieser Website verwendeten Schriftarten (Montserrat und Lexicon) sind lokal auf diesem Server gespeichert. Beim Laden der Schriftarten wird <strong>keine Verbindung</strong> zu Servern von Google oder anderen Drittanbietern hergestellt.
+        </p>
+
+        <h2>4. Cookies & Einwilligungsverwaltung (TDDDG / DSGVO)</h2>
+        <p>
+          Diese Website setzt von sich aus <strong>keine Werbe- oder Analyse-Cookies</strong> ein. Um Ihre Entscheidung im Cookie- und Datenschutz-Hinweis (ob externe Video-Player von YouTube und Instagram geladen werden dürfen) zu speichern, wird ausschließlich ein technisch notwendiger Eintrag im lokalen Speicher Ihres Browsers (<code>localStorage</code>) abgelegt (Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG und Art. 6 Abs. 1 lit. c bzw. f DSGVO).
+        </p>
+        <p>
+          Sie können Ihre Entscheidung jederzeit mit einem Klick widerrufen oder anpassen:
+        </p>
+        <p>
+          <button type="button" class="chrome-pill" data-open-cookie-settings>
+            Cookie- & Video-Einstellungen öffnen
+          </button>
+        </p>
+
+        <h2>5. Eingebettete Videos (YouTube & Instagram – Zwei-Klick-Einwilligung)</h2>
+        <p>
+          Auf den Übersichtsseiten werden ausschließlich lokal gespeicherte Vorschaubilder angezeigt. Eine Verbindung zu externen Video-Plattformen wird <strong>erst nach Ihrer ausdrücklichen Einwilligung</strong> (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) über den Cookie-Hinweis oder durch Klick auf „Video laden“ im jeweiligen Projekt-Fenster hergestellt.
+        </p>
+
+        <h3>YouTube (erweiterter Datenschutzmodus)</h3>
+        <p>
+          Bei entsprechender Einwilligung werden Videos der Plattform YouTube im erweiterten Datenschutzmodus (<code>youtube-nocookie.com</code>) geladen. Anbieter ist die Google Ireland Limited („Google“), Gordon House, Barrow Street, Dublin 4, Irland. Beim Laden des Players erhält YouTube Ihre IP-Adresse sowie Informationen darüber, welches Video Sie abrufen, und kann Cookies bzw. vergleichbare Technologien speichern. Weitere Informationen: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy?hl=de</a>.
+        </p>
+
+        <h3>Instagram (Reels)</h3>
+        <p>
+          Bei entsprechender Einwilligung werden einzelne Video-Reels über die Einbettungsfunktion von Instagram geladen. Anbieter ist die Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland. Beim Laden eines Instagram-Reels wird eine Verbindung zu Servern von Meta hergestellt, wobei Ihre IP-Adresse und technische Gerätedaten übermittelt sowie Cookies gesetzt werden können. Sind Sie in Ihrem Instagram-Konto eingeloggt, kann Meta den Aufruf Ihrem Profil zuordnen. Weitere Informationen: <a href="https://privacycenter.instagram.com/policy/" target="_blank" rel="noopener noreferrer">https://privacycenter.instagram.com/policy/</a>.
+        </p>
+
+        <h2>6. Externe Social-Media-Links</h2>
+        <p>
+          In der oberen Navigationsleiste finden Sie einfache Verlinkungen (Hyperlinks) zu Profilen auf LinkedIn, Instagram und YouTube. Es handelt sich dabei ausdrücklich um keine Social-Media-Plugins: Erst wenn Sie aktiv auf eines der Symbole klicken, verlassen Sie diese Website und werden zum jeweiligen Anbieter weitergeleitet.
+        </p>
+
+        <h2>7. Kontaktaufnahme per E-Mail oder Telefon</h2>
+        <p>
+          Wenn Sie per E-Mail oder Telefon Kontakt aufnehmen, werden Ihre Angaben inklusive der von Ihnen angegebenen Kontaktdaten zum Zwecke der Bearbeitung der Anfrage gespeichert (Art. 6 Abs. 1 lit. b bzw. lit. f DSGVO). Diese Daten werden nicht ohne Ihre Einwilligung an Dritte weitergegeben und gelöscht, sobald der Zweck der Speicherung entfällt und keine gesetzlichen Aufbewahrungsfristen entgegenstehen.
+        </p>
+
+        <h2>8. Ihre Rechte als betroffene Person</h2>
+        <p>
+          Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen (DSGVO) jederzeit das Recht auf:
+        </p>
+        <ul>
+          <li>unentgeltliche <strong>Auskunft</strong> über Ihre gespeicherten personenbezogenen Daten (Art. 15 DSGVO),</li>
+          <li><strong>Berichtigung</strong> unrichtiger Daten (Art. 16 DSGVO),</li>
+          <li><strong>Löschung</strong> (Art. 17 DSGVO) oder <strong>Einschränkung der Verarbeitung</strong> (Art. 18 DSGVO),</li>
+          <li><strong>Datenübertragbarkeit</strong> (Art. 20 DSGVO),</li>
+          <li><strong>Widerruf</strong> einer erteilten Einwilligung jederzeit mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO),</li>
+          <li><strong>Widerspruch</strong> gegen Verarbeitungen auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (Art. 21 DSGVO),</li>
+          <li><strong>Beschwerde</strong> bei einer Datenschutz-Aufsichtsbehörde (Art. 77 DSGVO).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding: 3.5rem 0 2rem;
+  }
+
+  .legal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .back-pill {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .title-highlight {
+    display: inline-block;
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 1;
+    padding: 0.08em 0.45em 0.14em;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    transition: all 0.45s var(--ease-fluid);
+  }
+
+  .title-highlight:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 10px 28px var(--pink-glow);
+  }
+
+  .legal-prose {
+    max-width: 760px;
+  }
+
+  .legal-prose h2 {
+    margin: 2.25rem 0 0.6rem;
+    font-size: 1.18rem;
+  }
+
+  .legal-prose h3 {
+    margin: 1.25rem 0 0.35rem;
+    font-size: 1rem;
+  }
+
+  .legal-prose p,
+  .legal-prose li {
+    line-height: 1.75;
+  }
+
+  .legal-prose ul {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .legal-prose a {
+    text-decoration: underline;
+    padding: 0.1rem 0.35rem;
+    border-radius: var(--radius-pill);
+    transition: all 0.3s var(--ease-fluid);
+  }
+  .legal-prose a:hover {
+    background: var(--chrome-pink);
+    text-decoration: none;
+  }
+</style>

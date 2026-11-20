@@ -1,0 +1,1202 @@
+---
+import ProjectModal from '../components/ProjectModal.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { siteConfig } from '../inhalt';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeNav?: 'home' | 'delight' | 'enlight' | 'about' | 'legal';
+}
+
+const {
+  title = 'Danio Schneider',
+  description = 'Portfolio von Danio Schneider – delight & enlighten.',
+  activeNav = 'home'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preload" href="/fonts/montserrat-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/lexicon-italic.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <!-- Fluid Pink-Chrome Cursor Orb (erscheint fließend beim Rüberwischen) -->
+    <div id="fluid-cursor-orb" class="fluid-cursor-orb" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/#ueber-mich" class="brand-name chrome-pill">
+          <span class="brand-prefix">Das ist</span>
+          <span class="brand-person">{siteConfig.name}</span>
+        </a>
+
+        <nav class="social-bubble chrome-bar" aria-label="Kontakt und Social Media">
+          <a
+            href={`mailto:${siteConfig.email}`}
+            class="social-item social-icon-only"
+            title={siteConfig.email}
+            aria-label={`E-Mail an ${siteConfig.email}`}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="3" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+          </a>
+
+          <a
+            href={siteConfig.socials.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-item social-icon-only"
+            title="LinkedIn"
+            aria-label="LinkedIn"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+              <rect x="2" y="9" width="4" height="12" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+          </a>
+
+          <a
+            href={siteConfig.socials.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-item social-icon-only"
+            title="Instagram"
+            aria-label="Instagram"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+
+          <a
+            href={siteConfig.socials.youtube}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-item social-icon-only"
+            title="YouTube"
+            aria-label="YouTube"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+              <path d="m10 15 5-3-5-3z" />
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <strong>{siteConfig.name}</strong>
+          <a href={`mailto:${siteConfig.email}`} class="footer-mail chrome-pill">{siteConfig.email}</a>
+        </div>
+
+        <div class="footer-right">
+          <button type="button" class="chrome-pill footer-btn" data-open-cookie-settings>
+            Cookie-Einstellungen
+          </button>
+          <a href="/impressum/" class="chrome-pill">Impressum</a>
+          <a href="/datenschutz/" class="chrome-pill">Datenschutzerklärung</a>
+        </div>
+      </div>
+    </footer>
+
+    <ProjectModal />
+    <CookieBanner />
+
+    <script is:inline>
+      // 1. Fließender Pink-Chrome-Lichtschein folgt der Maus beim Rüberwischen
+      const orb = document.getElementById('fluid-cursor-orb');
+      let targetX = window.innerWidth / 2;
+      let targetY = window.innerHeight / 2;
+      let currentX = targetX;
+      let currentY = targetY;
+      let hideTimeout;
+
+      window.addEventListener('pointermove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (orb) {
+          orb.classList.add('is-active');
+          clearTimeout(hideTimeout);
+          hideTimeout = setTimeout(() => {
+            orb.classList.remove('is-active');
+          }, 1600);
+        }
+
+        // 2. Lokaler 3D-Chrome-Glanz auf Karten & Hero-Elementen beim Rüberwischen
+        const surface = e.target.closest('.project-card, .chrome-surface');
+        if (surface) {
+          const rect = surface.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          surface.style.setProperty('--mx', `${x}%`);
+          surface.style.setProperty('--my', `${y}%`);
+        }
+      });
+
+      function animateOrb() {
+        currentX += (targetX - currentX) * 0.14;
+        currentY += (targetY - currentY) * 0.14;
+        if (orb) {
+          orb.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+        }
+        requestAnimationFrame(animateOrb);
+      }
+      requestAnimationFrame(animateOrb);
+    </script>
+
+    <style is:global>
+      /* ==========================================================================
+         LOKALE SCHRIFTARTEN: MONTSERRAT (Normal) & LEXICON (Highlights)
+      ========================================================================== */
+      @font-face {
+        font-family: 'Montserrat';
+        src: url('/fonts/montserrat-variable.woff2') format('woff2-variations');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Lexicon';
+        src: local('Lexicon'), local('Lexicon No2'), local('TEFF Lexicon'),
+          url('/fonts/lexicon-italic.woff2') format('woff2');
+        font-weight: 400 600;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Lexicon';
+        src: local('Lexicon Bold Italic'), local('Lexicon No2 Bold Italic'),
+          url('/fonts/lexicon-bold-italic.woff2') format('woff2');
+        font-weight: 700 800;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Lexicon';
+        src: local('Lexicon'), local('Lexicon No2'), local('TEFF Lexicon'),
+          url('/fonts/lexicon-regular.woff2') format('woff2');
+        font-weight: 400 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        /* NUR SCHWARZ, WEISS UND EIN EINHEITLICHES HELLERES PINK (erst beim Rüberwischen) */
+        --white: #ffffff;
+        --black: #000000;
+        --pink-main: #eb9eff;
+        --pink-bright: #f7caff;
+        --pink-glow: rgba(235, 158, 255, 0.72);
+
+        /* Silber/Schwarz-Weiß Liquid Chrome im Ruhezustand */
+        --chrome-mono: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #ffffff 42%,
+          #000000 50%,
+          #ffffff 58%,
+          #ffffff 100%
+        );
+
+        /* Einheitliches helleres Pink-Chrome beim Rüberwischen */
+        --chrome-pink: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #fbe3ff 24%,
+          #eb9eff 50%,
+          #ffffff 74%,
+          #f5c2ff 100%
+        );
+
+        --chrome-pink-border: linear-gradient(
+          135deg,
+          #000000 0%,
+          #eb9eff 35%,
+          #ffffff 50%,
+          #eb9eff 65%,
+          #000000 100%
+        );
+
+        --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-highlight: 'Lexicon', Georgia, serif;
+
+        --radius-fluid: 28px;
+        --radius-pill: 999px;
+        --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background-color: var(--white);
+        color: var(--black);
+        font-family: var(--font-sans);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1280px, 92vw);
+        margin-inline: auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ==========================================================================
+         FLUID PINK-CHROME CURSOR ORB (Sichtbar nur während man rüberwischt!)
+      ========================================================================== */
+      .fluid-cursor-orb {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 340px;
+        height: 340px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(235, 158, 255, 0.48) 0%,
+          rgba(247, 202, 255, 0.25) 42%,
+          rgba(255, 255, 255, 0) 72%
+        );
+        filter: blur(22px);
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.55s var(--ease-fluid);
+        will-change: transform, opacity;
+      }
+
+      .fluid-cursor-orb.is-active {
+        opacity: 1;
+      }
+
+      /* ==========================================================================
+         HEADER (Fluid Chrome Bar & Pills)
+      ========================================================================== */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.84);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--black);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 80px;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .chrome-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.48rem 1.2rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        background: var(--white);
+        color: var(--black);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: all 0.45s var(--ease-fluid);
+      }
+
+      .chrome-pill:hover,
+      .chrome-pill:focus-visible {
+        background: var(--chrome-pink);
+        border-color: var(--black);
+        box-shadow:
+          0 10px 28px var(--pink-glow),
+          inset 0 2px 3px rgba(255, 255, 255, 0.95);
+        transform: translateY(-2px) scale(1.03);
+      }
+
+      .brand-name {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.42rem;
+        font-family: var(--font-sans);
+        font-size: 1.05rem;
+      }
+
+      .brand-prefix {
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 1.35rem;
+        line-height: 1;
+      }
+
+      .brand-person {
+        font-family: var(--font-sans);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-word {
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-weight: 700;
+        font-size: 1.26em;
+        text-transform: none;
+        letter-spacing: 0.01em;
+        line-height: 1;
+      }
+
+      .chrome-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.28rem 0.35rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        background: var(--white);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: box-shadow 0.45s var(--ease-fluid);
+      }
+
+      .social-bubble:hover {
+        box-shadow:
+          0 10px 28px var(--pink-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+
+      .social-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.48rem;
+        height: 36px;
+        border-radius: var(--radius-pill);
+        border: 1px solid transparent;
+        color: var(--black);
+        font-family: var(--font-sans);
+        font-size: 0.84rem;
+        font-weight: 600;
+        transition: all 0.4s var(--ease-fluid);
+      }
+
+      .social-mail-item {
+        padding: 0 0.85rem;
+      }
+
+      .social-icon-only {
+        width: 36px;
+        padding: 0;
+      }
+
+      .social-item:hover,
+      .social-item:focus-visible {
+        background: var(--chrome-pink);
+        border-color: var(--black);
+        box-shadow:
+          0 6px 18px var(--pink-glow),
+          inset 0 2px 3px rgba(255, 255, 255, 0.95);
+        transform: translateY(-1px) scale(1.04);
+        outline: none;
+      }
+
+      .social-divider {
+        width: 1px;
+        height: 18px;
+        background: var(--black);
+        margin: 0 0.2rem;
+        opacity: 0.35;
+      }
+
+      @media (max-width: 720px) {
+        .social-mail-text {
+          display: none;
+        }
+        .social-mail-item {
+          width: 36px;
+          padding: 0;
+        }
+      }
+
+      .nav-link {
+        font-family: var(--font-sans);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--black);
+        padding: 0.42rem 1.15rem;
+        border-radius: var(--radius-pill);
+        border: 1px solid transparent;
+        transition: all 0.45s var(--ease-fluid);
+      }
+
+      .nav-highlight-font {
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-size: 1.28rem;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      /* Im Ruhezustand nur Schwarz/Weiß – Pink-Chrome erst beim Rüberwischen! */
+      .nav-link.active {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        background: var(--chrome-pink);
+        color: var(--black);
+        border-color: var(--black);
+        box-shadow:
+          0 8px 24px var(--pink-glow),
+          inset 0 2px 4px rgba(255, 255, 255, 0.9);
+        transform: translateY(-1px);
+      }
+
+      /* ==========================================================================
+         PROJECT GRID & FLUID CHROME CARDS
+         (Im Ruhezustand 100% Schwarz/Weiß · Beim Rüberwischen: Pink-Chrome & Farbe!)
+      ========================================================================== */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2.5rem;
+        align-items: start;
+      }
+
+      @media (max-width: 820px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+
+      .project-card {
+        --mx: 50%;
+        --my: 50%;
+        position: relative;
+        background: var(--white);
+        border: 1.5px solid var(--black);
+        border-radius: var(--radius-fluid);
+        overflow: hidden;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        transition:
+          transform 0.55s var(--ease-fluid),
+          box-shadow 0.55s var(--ease-fluid),
+          background 0.55s var(--ease-fluid);
+      }
+
+      /* Liquid Pink-Chrome Spiegelung beim Rüberwischen */
+      .project-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          480px circle at var(--mx) var(--my),
+          rgba(235, 158, 255, 0.65) 0%,
+          rgba(247, 202, 255, 0.35) 38%,
+          rgba(255, 255, 255, 0) 72%
+        );
+        opacity: 0;
+        transition: opacity 0.45s var(--ease-fluid);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .project-card:hover,
+      .project-card:focus-visible {
+        transform: translateY(-8px) scale(1.015);
+        background: var(--chrome-pink);
+        box-shadow:
+          0 24px 54px -10px var(--pink-glow),
+          0 0 0 2px var(--black),
+          inset 0 2px 6px rgba(255, 255, 255, 0.95);
+        outline: none;
+      }
+
+      .project-card:hover::before,
+      .project-card:focus-visible::before {
+        opacity: 1;
+      }
+
+      .card-image {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        flex-shrink: 0;
+        background: var(--black);
+        overflow: hidden;
+        border-bottom: 1.5px solid var(--black);
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s var(--ease-fluid);
+      }
+
+      .project-card:hover .card-image img,
+      .project-card:focus-visible .card-image img {
+        transform: scale(1.05);
+      }
+
+      .card-text {
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
+        padding: 1.3rem 1.45rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .card-topline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card-meta-right {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      .card-laurel-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        background: var(--white);
+        color: var(--black);
+        transition: all 0.4s var(--ease-fluid);
+      }
+
+      .project-card:hover .card-laurel-badge,
+      .project-card:focus-visible .card-laurel-badge {
+        background: var(--white);
+        box-shadow: 0 4px 16px var(--pink-glow);
+        transform: scale(1.08);
+      }
+
+      /* Highlight-Tag in Lexicon */
+      .card-cat {
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-weight: 600;
+        font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+        line-height: 1;
+        color: var(--black);
+        padding: 0.16rem 0.78rem 0.22rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        background: var(--white);
+        transition: all 0.45s var(--ease-fluid);
+      }
+
+      .project-card:hover .card-cat,
+      .project-card:focus-visible .card-cat {
+        background: var(--white);
+        box-shadow: 0 4px 16px var(--pink-glow);
+        transform: scale(1.05);
+      }
+
+      .card-year {
+        font-family: var(--font-sans);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--black);
+      }
+
+      .card-title {
+        margin: 0.35rem 0 0;
+        font-family: var(--font-sans);
+        font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+        font-weight: 700;
+        line-height: 1.35;
+        color: var(--black);
+      }
+
+      .card-subtitle {
+        margin: 0;
+        font-family: var(--font-sans);
+        font-size: clamp(0.82rem, 1vw, 0.88rem);
+        font-weight: 400;
+        color: var(--black);
+      }
+
+      .card-awards {
+        margin-top: 0.55rem;
+        padding-top: 0.55rem;
+        border-top: 1px solid var(--black);
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .card-award-tag {
+        font-family: var(--font-sans);
+        font-size: 0.74rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        line-height: 1.4;
+        color: var(--black);
+      }
+
+      /* ==========================================================================
+         DETAIL MODAL (Fluid Chrome)
+      ========================================================================== */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s var(--ease-fluid);
+      }
+
+      .modal-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-dialog {
+        background: var(--white);
+        width: min(880px, 100%);
+        max-height: 92vh;
+        border-radius: var(--radius-fluid);
+        border: 1.5px solid var(--black);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.45s var(--ease-fluid);
+      }
+
+      .modal-dialog:hover {
+        box-shadow:
+          0 30px 80px var(--pink-glow),
+          0 0 0 2px var(--black);
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        border-bottom: 1.5px solid var(--black);
+        background: var(--white);
+      }
+
+      .modal-cat-tag {
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 1.55rem;
+        line-height: 1;
+        color: var(--black);
+        padding: 0.18rem 0.95rem 0.24rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        transition: all 0.4s var(--ease-fluid);
+      }
+
+      .modal-cat-tag:hover {
+        background: var(--chrome-pink);
+        box-shadow: 0 6px 20px var(--pink-glow);
+      }
+
+      .modal-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .modal-text-btn {
+        background: var(--white);
+        border: 1.5px solid var(--black);
+        border-radius: var(--radius-pill);
+        padding: 0.42rem 1rem;
+        font-family: var(--font-sans);
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--black);
+        cursor: pointer;
+        transition: all 0.4s var(--ease-fluid);
+      }
+
+      .modal-text-btn:hover {
+        background: var(--chrome-pink);
+        box-shadow: 0 6px 20px var(--pink-glow);
+        transform: translateY(-1px);
+      }
+
+      .modal-content-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .modal-video {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: var(--black);
+        border-bottom: 1.5px solid var(--black);
+        overflow: hidden;
+      }
+
+      /* 4:3-Videos ohne schwarze Ränder */
+      .modal-dialog.is-ratio-4-3 {
+        width: min(760px, 100%);
+      }
+
+      .modal-dialog.is-ratio-4-3 .modal-video {
+        aspect-ratio: 4 / 3;
+      }
+
+      /* 9:16-Videos (Shorts / Hochformat): Video bündig am linken Rand ohne schwarze Balken, Infos rechts daneben */
+      .modal-dialog.is-ratio-9-16 {
+        width: min(880px, 100%);
+      }
+
+      .modal-dialog.is-ratio-9-16 .modal-content-wrap {
+        display: grid;
+        grid-template-columns: minmax(300px, 355px) 1fr;
+        align-items: stretch;
+      }
+
+      .modal-dialog.is-ratio-9-16 .modal-video {
+        aspect-ratio: 9 / 16;
+        border-bottom: none;
+        border-right: 1.5px solid var(--black);
+      }
+
+      .modal-dialog.is-ratio-9-16 .modal-body-split {
+        grid-template-columns: 1fr;
+        align-content: start;
+      }
+
+      @media (max-width: 720px) {
+        .modal-dialog.is-ratio-9-16 .modal-content-wrap {
+          grid-template-columns: 1fr;
+        }
+        .modal-dialog.is-ratio-9-16 .modal-video {
+          max-width: 340px;
+          margin-inline: auto;
+          border-right: 1.5px solid var(--black);
+          border-left: 1.5px solid var(--black);
+          border-bottom: 1.5px solid var(--black);
+        }
+      }
+
+      .modal-video iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .modal-body {
+        padding: 1.75rem 2rem 2.2rem;
+      }
+
+      .modal-body-split {
+        display: grid;
+        grid-template-columns: 1fr 250px;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      @media (max-width: 720px) {
+        .modal-body-split {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .modal-skills-box {
+        border: 1.5px solid var(--black);
+        border-radius: 20px;
+        padding: 1.15rem 1.25rem;
+        background: var(--white);
+      }
+
+      .modal-skills-heading {
+        display: block;
+        font-family: var(--font-sans);
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.85rem;
+      }
+
+      .skills-bubbles-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+      }
+
+      .skill-bubble {
+        font-family: var(--font-sans);
+        font-size: 0.84rem;
+        font-weight: 600;
+        padding: 0.38rem 0.95rem;
+      }
+
+      .modal-meta-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.55rem;
+      }
+
+      .modal-title {
+        margin: 0 0 0.75rem;
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-weight: 600;
+        font-size: clamp(2rem, 3.2vw, 2.6rem);
+        line-height: 1.15;
+      }
+
+      .modal-awards-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        margin: 0 0 1.1rem;
+      }
+
+      .modal-award-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        align-self: flex-start;
+        font-family: var(--font-sans);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 0.48rem 1.05rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        background: var(--white);
+        transition: all 0.4s var(--ease-fluid);
+      }
+
+      .modal-award-laurel {
+        flex-shrink: 0;
+      }
+
+      .modal-award-item:hover {
+        background: var(--chrome-pink);
+        box-shadow: 0 6px 20px var(--pink-glow);
+      }
+
+      .modal-description {
+        margin: 0 0 1.5rem;
+        font-size: 1rem;
+        line-height: 1.75;
+        max-width: 66ch;
+      }
+
+      .modal-yt-link {
+        display: inline-block;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 0.65rem 1.45rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--black);
+        background: var(--white);
+        color: var(--black);
+        transition: all 0.45s var(--ease-fluid);
+      }
+
+      .modal-yt-link:hover {
+        background: var(--chrome-pink);
+        box-shadow: 0 8px 26px var(--pink-glow);
+        transform: translateY(-2px);
+      }
+
+      /* ==========================================================================
+         FOOTER
+      ========================================================================== */
+      .site-footer {
+        margin-top: 6rem;
+        border-top: 1px solid var(--black);
+        background: var(--white);
+        padding: 2.5rem 0;
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+
+      .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+      }
+
+      .footer-right {
+        display: flex;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .site-footer .chrome-pill {
+        font-family: var(--font-sans);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.65;
+        padding: 0.48rem 1.2rem;
+        margin: 0;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
+      .footer-btn {
+        cursor: pointer;
+      }
+
+      /* ==========================================================================
+         COOKIE NOTICE & 2-KLICK VIDEO CONSENT GATE (Fluid Chrome, Schwarz/Weiß/Pink)
+      ========================================================================== */
+      .cookie-banner {
+        position: fixed;
+        left: 50%;
+        bottom: 1.5rem;
+        transform: translate(-50%, 24px);
+        width: min(920px, 92vw);
+        z-index: 160;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1.5px solid var(--black);
+        border-radius: var(--radius-fluid);
+        box-shadow: 0 20px 55px rgba(0, 0, 0, 0.16);
+        padding: 1.15rem 1.5rem;
+        opacity: 0;
+        transition:
+          opacity 0.4s var(--ease-fluid),
+          transform 0.4s var(--ease-fluid),
+          box-shadow 0.4s var(--ease-fluid);
+      }
+
+      .cookie-banner.is-visible {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      .cookie-banner:hover {
+        box-shadow:
+          0 22px 58px var(--pink-glow),
+          0 0 0 1.5px var(--black);
+      }
+
+      .cookie-banner-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .cookie-copy {
+        flex: 1 1 380px;
+      }
+
+      .cookie-title {
+        display: block;
+        font-family: var(--font-highlight);
+        font-style: italic;
+        font-weight: 700;
+        font-size: 1.35rem;
+        line-height: 1.15;
+        margin-bottom: 0.25rem;
+      }
+
+      .cookie-text {
+        margin: 0;
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
+
+      .cookie-policy-link {
+        text-decoration: underline;
+        font-weight: 600;
+        margin-left: 0.25rem;
+      }
+
+      .cookie-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+      }
+
+      .cookie-btn {
+        cursor: pointer;
+        font-family: var(--font-sans);
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 0.55rem 1.15rem;
+      }
+
+      .cookie-btn-primary {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .cookie-btn-primary:hover,
+      .cookie-btn-primary:focus-visible {
+        color: var(--black);
+      }
+
+      .video-consent-gate {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        background: var(--black);
+        overflow: hidden;
+      }
+
+      .video-consent-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.32;
+        filter: blur(4px);
+        transform: scale(1.04);
+      }
+
+      .video-consent-card {
+        position: relative;
+        z-index: 2;
+        background: var(--white);
+        border: 1.5px solid var(--black);
+        border-radius: 22px;
+        padding: 1.35rem 1.5rem;
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      }
+
+      .video-consent-kicker {
+        display: block;
+        font-family: var(--font-sans);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.45rem;
+      }
+
+      .video-consent-text {
+        margin: 0 0 1.1rem;
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+
+      .video-consent-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+      }
+
+      .video-consent-btn {
+        cursor: pointer;
+        font-family: var(--font-sans);
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.48rem 1rem;
+      }
+
+      .video-consent-primary {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .video-consent-primary:hover,
+      .video-consent-primary:focus-visible {
+        color: var(--black);
+      }
+    </style>
+  </body>
+</html>

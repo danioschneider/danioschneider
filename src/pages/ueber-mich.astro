@@ -1,0 +1,286 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig, skillToSlug, formatBrandWords } from '../inhalt';
+---
+
+<BaseLayout title={`${siteConfig.about.headline} | Danio Schneider`} activeNav="about">
+  <section class="about-page">
+    <div class="container">
+      <div class="about-header">
+        <h1 class="title-highlight">{siteConfig.about.headline}</h1>
+      </div>
+
+      <div class="about-layout">
+        {siteConfig.about.photo && (
+          <figure class="about-photo-figure">
+            <div class="about-photo-box">
+              <img src={siteConfig.about.photo} alt={siteConfig.name} />
+            </div>
+            {siteConfig.about.photoCredit && (
+              <figcaption class="about-photo-credit">{siteConfig.about.photoCredit}</figcaption>
+            )}
+          </figure>
+        )}
+
+        <div class="about-text">
+          {siteConfig.about.paragraphs.map((paragraph) => (
+            <p set:html={formatBrandWords(paragraph)} />
+          ))}
+
+          <div class="about-education">
+            <p class="contact-label">Ausbildung</p>
+            <ul class="education-list">
+              {siteConfig.about.education.map((item) => (
+                <li class="education-item">
+                  <span class="education-period">{item.period}</span>
+                  <div class="education-info">
+                    <strong class="education-institution">{item.institution}</strong>
+                    <span class="education-detail">{item.detail}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <aside class="about-skills-col">
+          <div class="about-skills-card">
+            <p class="contact-label">Fähigkeiten</p>
+            <div class="skills-bubbles-wrap">
+              {siteConfig.about.skills.map((skill) => (
+                <a href={`/faehigkeiten/${skillToSlug(skill)}/`} class="chrome-pill skill-bubble">
+                  {skill}
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .about-header {
+    padding-bottom: 1rem;
+    margin-bottom: 2.75rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .title-highlight {
+    display: inline-block;
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(3rem, 5.5vw, 4.4rem);
+    line-height: 1;
+    color: var(--black);
+    padding: 0.08em 0.48em 0.14em;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    transition: all 0.5s var(--ease-fluid);
+  }
+
+  .title-highlight:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 12px 32px var(--pink-glow);
+    transform: translateY(-2px);
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(300px, 385px) minmax(0, 1.3fr) minmax(215px, 260px);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 1020px) {
+    .about-layout {
+      grid-template-columns: minmax(280px, 360px) 1fr;
+    }
+    .about-skills-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about-skills-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .about-skills-card {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    padding: 1.35rem 1.4rem;
+    background: var(--white);
+  }
+
+  .about-photo-figure {
+    margin: 0;
+  }
+
+  /* Im Ruhezustand farbig – beim Rüberfahren Schwarz-Weiß! */
+  .about-photo-box {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    overflow: hidden;
+    background: var(--black);
+    transition: all 0.55s var(--ease-fluid);
+  }
+
+  .about-photo-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(0%) contrast(1);
+    transition: filter 0.6s var(--ease-fluid), transform 0.6s var(--ease-fluid);
+  }
+
+  .about-photo-box:hover {
+    box-shadow:
+      0 24px 54px -10px var(--pink-glow),
+      0 0 0 2px var(--black);
+    transform: translateY(-5px) scale(1.01);
+  }
+
+  .about-photo-box:hover img {
+    filter: grayscale(100%) contrast(1.06);
+    transform: scale(1.03);
+  }
+
+  .about-photo-credit {
+    margin-top: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-align: left;
+  }
+
+  .about-text p {
+    margin: 0 0 1.25rem;
+    font-size: 1.04rem;
+    line-height: 1.75;
+    max-width: 60ch;
+  }
+
+  .about-education {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1.5px solid var(--black);
+  }
+
+  .education-list {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .education-item {
+    display: grid;
+    grid-template-columns: 118px 1fr;
+    gap: 0.9rem;
+    align-items: baseline;
+    padding: 0.55rem 0.85rem;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    transition: all 0.4s var(--ease-fluid);
+  }
+
+  .education-item:hover {
+    background: var(--chrome-pink);
+    border-color: var(--black);
+    box-shadow: 0 8px 22px var(--pink-glow);
+  }
+
+  .education-period {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .education-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+  }
+
+  .education-institution {
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-size: 1.38rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .education-detail {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.94rem;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 560px) {
+    .education-item {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+
+  .about-contact {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    padding: 1.35rem 1.4rem;
+    background: var(--white);
+  }
+
+  .contact-label {
+    margin: 0 0 0.75rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .contact-mail {
+    display: inline-block;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.28rem;
+    color: var(--black);
+    padding: 0.28rem 1rem 0.35rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    word-break: break-all;
+    transition: all 0.45s var(--ease-fluid);
+  }
+
+  .contact-mail:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 10px 28px var(--pink-glow);
+    transform: translateY(-2px);
+  }
+</style>

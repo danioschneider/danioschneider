@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { allSkills, projects, skillToSlug, type SkillName } from '../../inhalt';
+
+export function getStaticPaths() {
+  return allSkills.map((skillName) => ({
+    params: { skill: skillToSlug(skillName) },
+    props: { skillName }
+  }));
+}
+
+interface Props {
+  skillName: SkillName;
+}
+
+const { skillName } = Astro.props;
+const matchingProjects = projects.filter((p) => p.skills.includes(skillName));
+---
+
+<BaseLayout title={`${skillName} · Projekte | Danio Schneider`} activeNav="home">
+  <section class="skill-page">
+    <div class="container">
+      <div class="skill-topbar">
+        <a href="/" class="chrome-pill back-pill">← Zurück zur Startseite</a>
+
+        <div class="skills-bubbles-wrap" aria-label="Alle Fähigkeiten">
+          {allSkills.map((s) => (
+            <a
+              href={`/faehigkeiten/${skillToSlug(s)}/`}
+              class:list={['chrome-pill skill-bubble', { 'is-current': s === skillName }]}
+            >
+              {s}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="page-header">
+        <h1 class="title-highlight">{skillName}</h1>
+        <p class="subtitle">
+          {matchingProjects.length} {matchingProjects.length === 1 ? 'Projekt' : 'Projekte'}
+        </p>
+      </div>
+
+      {matchingProjects.length > 0 ? (
+        <div class="projects-grid">
+          {matchingProjects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-skill-box">
+          <p>Aktuell sind unter „{skillName}“ noch keine Projekte hinterlegt.</p>
+          <a href="/" class="chrome-pill">Alle Projekte auf der Startseite ansehen</a>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .skill-page {
+    padding: 3rem 0 2.5rem;
+  }
+
+  .skill-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .back-pill {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .skill-bubble.is-current {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .skill-bubble.is-current:hover {
+    color: var(--black);
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .title-highlight {
+    margin: 0;
+    font-family: var(--font-highlight);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(3rem, 5.8vw, 4.6rem);
+    line-height: 1;
+    color: var(--black);
+    padding: 0.08em 0.48em 0.14em;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    transition: all 0.5s var(--ease-fluid);
+  }
+
+  .title-highlight:hover {
+    background: var(--chrome-pink);
+    box-shadow: 0 12px 32px var(--pink-glow);
+    transform: translateY(-2px);
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .empty-skill-box {
+    border: 1.5px solid var(--black);
+    border-radius: var(--radius-fluid);
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .empty-skill-box p {
+    margin: 0 0 1.25rem;
+    font-size: 1.05rem;
+  }
+</style>

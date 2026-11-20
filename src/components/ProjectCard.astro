@@ -1,0 +1,52 @@
+---
+import type { Project } from '../inhalt';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const hasAwards = Boolean(project.awards && project.awards.length > 0);
+---
+
+<article
+  class={`project-card project-${project.category}`}
+  data-project-card
+  data-project-slug={project.slug}
+  data-category={project.category}
+  tabindex="0"
+  role="button"
+  aria-label={project.title}
+>
+  <div class="card-image">
+    <img
+      src={project.thumbnail}
+      alt={project.title}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="card-text">
+    <div class="card-topline">
+      <span class="card-cat">{project.category}</span>
+      <div class="card-meta-right">
+        {hasAwards && (
+          <span
+            class="card-laurel-badge"
+            title={project.awards?.join(' · ')}
+            aria-label={project.awards?.join(', ')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="6" />
+              <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+            </svg>
+          </span>
+        )}
+        <span class="card-year">{project.year}</span>
+      </div>
+    </div>
+    <h3 class="card-title">{project.title}</h3>
+    <p class="card-subtitle">{project.subtitle}</p>
+  </div>
+</article>
