@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { siteConfig, delightProjects, enlightProjects, skillToSlug, formatBrandWords } from '../inhalt';
 ---
 
-<BaseLayout title="Danio Schneider" activeNav="home">
+<BaseLayout title="Danio Schneider" ogTitle="Danio Schneider – Zwischen delight und enlight" activeNav="home">
   <!-- ==========================================
        VOLLBILD-HERO: ERST NUR DER SPRUCH ZENTRAL
   =========================================== -->
@@ -726,7 +726,9 @@ import { siteConfig, delightProjects, enlightProjects, skillToSlug, formatBrandW
     }
 
     .about-photo-figure {
+      width: 100%;
       max-width: 340px;
+      margin-inline: auto;
     }
 
     .about-photo-box {

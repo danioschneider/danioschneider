@@ -100,8 +100,8 @@ export const siteConfig = {
     photo: '/images/danio.jpg',
     photoCredit: '© Tinett Kähler',
     paragraphs: [
-      'Ich bin Danio, 2003 in Berlin geboren und interessiere mich seitdem für das Zusammenspiel von enlight und delight.',
-      'Meiner Meinung nach sollte gute Unterhaltung in erster Linie Spaß machen, aber gleichzeitig bewegen. Dieses Motto möchte ich in allen Bereichen eines Projektes umsetzen.'
+      'Ich bin Danio, 2003 in Berlin geboren, und mich fasziniert das Zusammenspiel von delight und enlight – zwischen fiktionalem und non-fiktionalem Erzählen.',
+      'Gute Unterhaltung sollte in erster Linie Spaß machen, aber gleichzeitig bewegen. Genau das setze ich vom Konzept bis zum fertigen Schnitt in meinen Projekten um.'
     ],
     skills: allSkills,
     education: [

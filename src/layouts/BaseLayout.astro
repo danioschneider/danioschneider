@@ -5,15 +5,20 @@ import { siteConfig } from '../inhalt';
 
 interface Props {
   title?: string;
+  ogTitle?: string;
   description?: string;
   activeNav?: 'home' | 'delight' | 'enlight' | 'about' | 'legal';
 }
 
 const {
   title = 'Danio Schneider',
-  description = 'Portfolio von Danio Schneider – delight & enlighten.',
+  ogTitle = 'Danio Schneider – Zwischen delight und enlight',
+  description = 'Zwischen delight und enlight – Portfolio von Danio Schneider. Gute Unterhaltung kann beides: Produktion, Regie, Kamera, Schnitt, Redaktion und Grafiken.',
   activeNav = 'home'
 } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://danioschneider.de').toString();
+const ogImageUrl = new URL('/images/danio.jpg', Astro.site ?? 'https://danioschneider.de').toString();
 ---
 
 <!doctype html>
@@ -23,6 +28,28 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Favicon & App-Icon (Porträt) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph / WhatsApp / LinkedIn / iMessage Vorschau -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="Danio Schneider" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="Danio Schneider – Zwischen delight und enlight" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <link rel="preload" href="/fonts/montserrat-variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/lexicon-italic.woff2" as="font" type="font/woff2" crossorigin />
   </head>
