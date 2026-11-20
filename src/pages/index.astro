@@ -626,4 +626,140 @@ import { siteConfig, delightProjects, enlightProjects, skillToSlug, formatBrandW
     box-shadow: 0 10px 28px var(--pink-glow);
     transform: translateY(-2px);
   }
+
+  /* ==========================================================================
+     MOBILE-OPTIMIERUNG STARTSEITE (Nur <= 768px – Desktop/PC 100% unverändert!)
+  ========================================================================== */
+  @media (max-width: 768px) {
+    .quote-fullscreen {
+      min-height: calc(100svh - 62px);
+      padding: 2.5rem 0;
+    }
+
+    .quote-prefix {
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      margin-bottom: 1.05rem;
+    }
+
+    .central-quote {
+      font-size: clamp(1.9rem, 8vw, 2.5rem);
+      line-height: 1.24;
+    }
+
+    .quote-link-underlined {
+      padding: 0.02em 0.16em 0.05em;
+      margin: 0 -0.04em;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 5px;
+    }
+
+    .quote-cite {
+      margin-top: 1.6rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+    }
+
+    .projects-section {
+      padding: 3.25rem 0 1rem;
+      scroll-margin-top: 70px;
+    }
+
+    .category-heading {
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.85rem;
+      gap: 0.65rem;
+    }
+
+    .category-title-group {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.55rem;
+      width: 100%;
+    }
+
+    .category-heading h2 {
+      font-size: clamp(1.85rem, 8vw, 2.45rem);
+      line-height: 1.15;
+      max-width: 100%;
+    }
+
+    .heading-fluid-pill {
+      padding: 0.2rem 0.95rem 0.28rem;
+      max-width: 100%;
+      border-radius: 26px;
+    }
+
+    .category-definition {
+      font-size: 0.76rem;
+      letter-spacing: 0.1em;
+      line-height: 1.45;
+    }
+
+    .projects-expandable:not(.is-expanded) :global(.project-card:nth-child(4)) {
+      max-height: 100px;
+    }
+
+    .expand-action-row {
+      margin-top: 1rem;
+    }
+
+    .projects-expandable.is-expanded .expand-action-row {
+      margin-top: 1.6rem;
+    }
+
+    .expand-btn {
+      font-size: 0.78rem;
+      padding: 0.6rem 1.3rem;
+      letter-spacing: 0.05em;
+      max-width: 100%;
+    }
+
+    /* Über mich auf dem Handy */
+    .about-home-section {
+      padding: 3.5rem 0 1.5rem;
+      scroll-margin-top: 70px;
+    }
+
+    .about-layout {
+      gap: 1.75rem;
+    }
+
+    .about-photo-figure {
+      max-width: 340px;
+    }
+
+    .about-photo-box {
+      border-radius: 22px;
+    }
+
+    .about-text p {
+      font-size: 0.96rem;
+      line-height: 1.7;
+      margin-bottom: 1.1rem;
+    }
+
+    .about-education {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+    }
+
+    .education-item {
+      padding: 0.55rem 0.25rem;
+      border-radius: 14px;
+    }
+
+    .education-institution {
+      font-size: 1.18rem;
+    }
+
+    .education-detail {
+      font-size: 0.88rem;
+    }
+
+    .about-skills-card {
+      padding: 1.1rem 1.15rem;
+      border-radius: 22px;
+    }
+  }
 </style>

@@ -138,4 +138,41 @@ const matchingProjects = projects.filter((p) => p.skills.includes(skillName));
     margin: 0 0 1.25rem;
     font-size: 1.05rem;
   }
+
+  @media (max-width: 768px) {
+    .skill-page {
+      padding: 1.75rem 0 1.5rem;
+    }
+
+    .skill-topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .back-pill {
+      font-size: 0.8rem;
+      padding: 0.38rem 0.9rem;
+    }
+
+    .page-header {
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.85rem;
+      gap: 0.65rem;
+    }
+
+    .title-highlight {
+      font-size: clamp(1.85rem, 8vw, 2.45rem);
+      line-height: 1.15;
+      padding: 0.2rem 0.95rem 0.28rem;
+      border-radius: 26px;
+      max-width: 100%;
+    }
+
+    .subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+    }
+  }
 </style>
