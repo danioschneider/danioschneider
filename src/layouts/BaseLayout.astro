@@ -19,6 +19,41 @@ const {
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://danioschneider.de').toString();
 const ogImageUrl = new URL('/images/danio.jpg', Astro.site ?? 'https://danioschneider.de').toString();
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': 'https://danioschneider.de/#danio-schneider',
+      name: siteConfig.name,
+      url: 'https://danioschneider.de/',
+      image: ogImageUrl,
+      jobTitle: 'Produktion, Regie, Kamera, Schnitt, Redaktion & Grafiken',
+      description,
+      alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Filmuniversität Babelsberg KONRAD WOLF'
+      },
+      sameAs: [
+        siteConfig.socials.linkedin,
+        siteConfig.socials.instagram,
+        siteConfig.socials.youtube
+      ]
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://danioschneider.de/#website',
+      url: 'https://danioschneider.de/',
+      name: 'Danio Schneider',
+      description,
+      inLanguage: 'de-DE',
+      publisher: {
+        '@id': 'https://danioschneider.de/#danio-schneider'
+      }
+    }
+  ]
+};
 ---
 
 <!doctype html>
@@ -49,6 +84,9 @@ const ogImageUrl = new URL('/images/danio.jpg', Astro.site ?? 'https://danioschn
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="sitemap" href="/sitemap.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
     <link rel="preload" href="/fonts/montserrat-variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/lexicon-italic.woff2" as="font" type="font/woff2" crossorigin />

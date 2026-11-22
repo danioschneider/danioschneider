@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://danioschneider.de/sitemap.xml
